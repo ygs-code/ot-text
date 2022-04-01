@@ -13,7 +13,7 @@
     "ot-fuzzer": "~1.0.0"
   },
   "scripts": {
-    "test": "mocha test/*.coffee"
+    "test": "mocha test/*.js"
   },
   "repository": {
     "type": "git",
