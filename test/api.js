@@ -1,8 +1,20 @@
+/*
+ * @Date: 2022-04-02 10:06:11
+ * @Author: Yao guan shou
+ * @LastEditors: Yao guan shou
+ * @LastEditTime: 2022-04-02 13:56:27
+ * @FilePath: /ot-text/test/api.js
+ * @Description: 
+ */
 var assert, randomInt, randomReal, randomWord, _ref;
 
+// 断言库
 assert = require('assert');
-
-_ref = require('ot-fuzzer'), randomInt = _ref.randomInt, randomReal = _ref.randomReal, randomWord = _ref.randomWord;
+// 生成随机ot数据的库
+_ref = require('../modules/ot-fuzzer'),
+ randomInt = _ref.randomInt, 
+ randomReal = _ref.randomReal,
+  randomWord = _ref.randomWord;
 
 module.exports = function(type, genOp) {
   return describe("text api for '" + type.name + "'", function() {

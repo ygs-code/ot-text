@@ -30,6 +30,7 @@ readOp = function (file) {
     }
     return _results;
   })();
+  console.log('op===',op)
   return type.normalize(op);
 };
 
@@ -75,28 +76,35 @@ describe("text", function () {
     //   console.log('_results=',_results)
     //   return _results;
     // });
-    // it("should compose without crashing", function () {
-    //   var op1, op2, result, testData, _results;
-    //   testData = fs
-    //     .readFileSync(__dirname + "/text-transform-tests.json")
-    //     .toString()
-    //     .split("\n");
-    //   _results = [];
-    //   while (testData.length >= 4) {
-    //     testData.shift();
-    //     op1 = readOp(testData);
-    //     console.log('testData=',testData)
-    //     console.log('op1=',op1)
-    //     testData.shift();
-    //     op2 = readOp(testData);
-    //     console.log('testData=',testData)
-    //     console.log('op2=',op2)
-    //     // 合并
-    //     _results.push((result = type.compose(op1, op2)));
-    //   }
-    //   console.log("_results=====", _results);
-    //   return _results;
-    // });
+    it("should compose without crashing", function () {
+      var op1, op2, result, testData, _results;
+      testData = fs
+        .readFileSync(__dirname + "/text-transform-tests.json")
+        .toString()
+        .split("\n");
+      _results = [];
+
+      while (testData.length >= 4) {
+        testData.shift();
+        op1 = readOp(testData);
+        console.log('testData=',testData)
+        // console.log('op1=',op1)
+        testData.shift();
+        op2 = readOp(testData);
+        // console.log('testData=',testData)
+        // console.log('op2=',op2)
+        // 合并
+        _results.push((result = type.compose(op1, op2)));
+      }
+
+      // op1 = readOp(`[1,{"d":"abcde"},14]`);
+      // op2 = readOp(`[7,{"d":"fg"},11]`);
+      // result = type.compose(op1, op2)
+      // console.log('result========',result)
+
+      console.log("_results=====", _results);
+      return _results;
+    });
   });
   //创建文本
   // describe('#create()', function() {
@@ -203,43 +211,43 @@ describe("text", function () {
   //     return assert.equal(false, type.selectionEq([0, 2], 0));
   //   });
   // });
-  describe('#transformSelection()', function() {
-    var del, ins, op, tc;
-    ins = [10, "oh hi"];
-    del = [
-      25, {
-        d: 20
-      }
-    ];
-    op = [
-      10, 'oh hi', 10, {
-        d: 20
-      }
-    ];
-    tc = function(op, isOwn, cursor, expected) {
-      console.log('op=',op)
-      console.log('isOwn=',isOwn)
-      console.log('cursor=',cursor)
-      console.log('expected=',expected)
-      assert(type.selectionEq(expected, type.transformSelection(cursor, op, isOwn)));
-      return assert(type.selectionEq(expected, type.transformSelection([cursor, cursor], op, isOwn)));
-    };
-    it("shouldn't move a cursor at the start of the inserted text", function() {
+  // describe('#transformSelection()', function() {
+  //   var del, ins, op, tc;
+  //   ins = [10, "oh hi"];
+  //   del = [
+  //     25, {
+  //       d: 20
+  //     }
+  //   ];
+  //   op = [
+  //     10, 'oh hi', 10, {
+  //       d: 20
+  //     }
+  //   ];
+  //   tc = function(op, isOwn, cursor, expected) {
+  //     console.log('op=',op)
+  //     console.log('isOwn=',isOwn)
+  //     console.log('cursor=',cursor)
+  //     console.log('expected=',expected)
+  //     assert(type.selectionEq(expected, type.transformSelection(cursor, op, isOwn)));
+  //     return assert(type.selectionEq(expected, type.transformSelection([cursor, cursor], op, isOwn)));
+  //   };
+  //   it("shouldn't move a cursor at the start of the inserted text", function() {
 
 
-      return tc(op, false, 10, 10);
-    });
-    // it("move a cursor at the start of the inserted text if its yours", function() {
-    //   return tc(ins, true, 10, 15);
-    // });
-    it('should move a character inside a deleted region to the start of the region', function() {
-      tc(del, false, 25, 25);
-      tc(del, false, 35, 25);
-      tc(del, false, 45, 25);
-      tc(del, true, 25, 25);
-      tc(del, true, 35, 25);
-      return tc(del, true, 45, 25);
-    });
+  //     return tc(op, false, 10, 10);
+  //   });
+  //   // it("move a cursor at the start of the inserted text if its yours", function() {
+  //   //   return tc(ins, true, 10, 15);
+  //   // });
+  //   it('should move a character inside a deleted region to the start of the region', function() {
+  //     tc(del, false, 25, 25);
+  //     tc(del, false, 35, 25);
+  //     tc(del, false, 45, 25);
+  //     tc(del, true, 25, 25);
+  //     tc(del, true, 35, 25);
+  //     return tc(del, true, 45, 25);
+  //   });
     // it("shouldn't effect cursors before the deleted region", function() {
     //   return tc(del, false, 10, 10);
     // });
@@ -262,7 +270,7 @@ describe("text", function () {
     //   tc(op, false, 40, 25);
     //   return tc(op, false, 41, 26);
     // });
-  });
+  // });
   // return describe('randomizer', function() {
   //   return it('passes', function() {
   //     this.timeout(10000);
